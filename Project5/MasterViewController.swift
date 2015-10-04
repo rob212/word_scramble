@@ -17,6 +17,7 @@ class MasterViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "promptForAnswer")
         if let startWordsPath = NSBundle.mainBundle().pathForResource("start", ofType: "txt") {
             if let startWords = try? String(contentsOfFile: startWordsPath, usedEncoding: nil) {
                 allWords = startWords.componentsSeparatedByString("\n")
@@ -44,6 +45,22 @@ class MasterViewController: UITableViewController {
         title = allWords[0]
         objects.removeAll(keepCapacity: true)
         tableView.reloadData()
+    }
+    
+    func promptForAnswer() {
+        let ac = UIAlertController(title: "Enter Word", message: nil, preferredStyle: .Alert)
+        ac.addTextFieldWithConfigurationHandler(nil)
+        
+        let submitAction = UIAlertAction(title: "Submit", style: .Default) { [unowned self, ac] (action: UIAlertAction!) in
+            let answer = ac.textFields![0]
+            self.submitAnswer(answer.text)
+        }
+        ac.addAction(submitAction)
+        presentViewController(ac, animated: true, completion: nil)
+    }
+    
+    func submitAnswer(answer: String?){
+        
     }
     
     
