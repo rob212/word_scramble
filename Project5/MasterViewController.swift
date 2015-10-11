@@ -65,9 +65,6 @@ class MasterViewController: UITableViewController {
     func submitAnswer(answer: String){
         let lowerAnswer = answer.lowercaseString
         
-        let errorTitle: String
-        let errorMessage: String
-        
         if wordIsPossible(lowerAnswer) {
             if wordIsOriginal(lowerAnswer) {
                 if wordIsReal(lowerAnswer) {
@@ -77,25 +74,32 @@ class MasterViewController: UITableViewController {
                     
                     return
                 } else {
-                    errorTitle = "Word not recognised"
-                    errorMessage = "You can't just make them up you know!"
+                    presentErrorMessage("Word not recognised", errorMessage: "You can't just make them up you know!")
                 }
             } else {
-                errorTitle = "Word already used"
-                errorMessage = "Be more original!"
+                presentErrorMessage("Word already used", errorMessage: "Be more original!")
             }
         } else {
-            errorTitle = "Word not possible"
-            errorMessage = "You can't spell that word from \(title!.lowercaseString)"
+            presentErrorMessage("Word not possible", errorMessage: "You can't spell that word from \(title!.lowercaseString)")
         }
+        
+    }
+    
+    func presentErrorMessage(errorTitle: String, errorMessage:String) {
         
         let ac = UIAlertController(title: errorTitle, message: errorMessage, preferredStyle: .Alert)
         ac.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
         presentViewController(ac, animated: true, completion: nil)
+
     }
     
     func wordIsPossible(word: String) -> Bool {
         var tempWord = title!.lowercaseString
+        
+        if word == tempWord {
+            presentErrorMessage("Can't use original word", errorMessage: "That's cheating, the original word doesn't count!")
+            return false
+        }
         
         for letter in word.characters {
             if let position = tempWord.rangeOfString(String(letter)) {
