@@ -53,14 +53,40 @@ class MasterViewController: UITableViewController {
         
         let submitAction = UIAlertAction(title: "Submit", style: .Default) { [unowned self, ac] (action: UIAlertAction!) in
             let answer = ac.textFields![0]
-            self.submitAnswer(answer.text)
+            if let userInput = answer.text {
+                self.submitAnswer(userInput)
+            }
+            
         }
         ac.addAction(submitAction)
         presentViewController(ac, animated: true, completion: nil)
     }
     
-    func submitAnswer(answer: String?){
+    func submitAnswer(answer: String){
+        let lowerAnswer = answer.lowercaseString
         
+        if wordIsPossible(lowerAnswer) {
+            if wordIsOriginal(lowerAnswer) {
+                if wordIsReal(lowerAnswer) {
+                    objects.insert(lowerAnswer, atIndex: 0)
+                    let indexPath = NSIndexPath(forRow: 0, inSection: 0)
+                    tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+                }
+            }
+        }
+    }
+    
+    func wordIsPossible(word: String) -> Bool {
+        return true
+    }
+    
+    
+    func wordIsOriginal(word: String) -> Bool {
+        return true
+    }
+    
+    func wordIsReal(word: String) -> Bool {
+        return true
     }
     
     
